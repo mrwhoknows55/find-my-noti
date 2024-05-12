@@ -1,0 +1,24 @@
+CREATE TABLE  NotificationEntity(
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    title TEXT NOT NULL ,
+    content TEXT NOT NULL,
+    packageName TEXT NOT NULL,
+    appName TEXT,
+    timestamp INTEGER NOT NULL,
+    imageUrl TEXT
+);
+
+
+selectAll:
+SELECT *
+FROM NotificationEntity;
+
+insert:
+INSERT INTO NotificationEntity(title, content, packageName, appName, timestamp, imageUrl)
+VALUES (?, ?, ?,?, ?, ?);
+
+selectById:
+SELECT * FROM NotificationEntity WHERE id = ?;
+
+selectByPackageName:
+SELECT * FROM NotificationEntity WHERE packageName = ?;

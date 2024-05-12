@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.sqldelight)
 }
 
 kotlin {
@@ -23,6 +24,13 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.koin.android)
+
+            // ktor server for android
+            implementation(libs.ktor.server.netty.jvm)
+            implementation(libs.ktor.server.content.negotiation)
+
+            implementation(libs.sqldelight.android.driver)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -32,16 +40,18 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
 
+            implementation(libs.koin.core)
             implementation(libs.materialkolor)
 
-            implementation(libs.ktor.server.netty)
+            // ktor client + common dependencies
             implementation(libs.ktor.client.core)
-
+            implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.kotlinx.serialization.json)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.sqldelight.jvm.driver)
         }
     }
 }
@@ -90,6 +100,14 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "com.mrwhoknows.findmynoti"
             packageVersion = "1.0.0"
+        }
+    }
+}
+
+sqldelight {
+    databases {
+        create("NotificationsDB") {
+            packageName.set("com.mrwhoknows.findmynoti")
         }
     }
 }
