@@ -13,7 +13,7 @@ androidx-test-junit = "1.1.5"
 compose = "1.6.7"
 compose-plugin = "1.6.2"
 junit = "4.13.2"
-koin = "3.2.0"
+koin = "3.5.6"
 kotlin = "1.9.23"
 kotlinxSerializationJson = "1.6.3"
 ktorVersion = "2.3.11"
@@ -52,3 +52,4 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqlDelightVersion"}
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
