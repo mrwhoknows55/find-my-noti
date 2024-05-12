@@ -1,3 +1,5 @@
+package com.mrwhoknows.findmynoti
+
 class Greeting {
     private val platform = getPlatform()
 

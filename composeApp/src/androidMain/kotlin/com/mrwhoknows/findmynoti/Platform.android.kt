@@ -1,3 +1,5 @@
+package com.mrwhoknows.findmynoti
+
 import android.os.Build
 
 class AndroidPlatform : Platform {
