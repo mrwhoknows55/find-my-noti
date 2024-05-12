@@ -1,11 +1,32 @@
-This is a Kotlin Multiplatform project targeting Android, Desktop.
+# Find My Notification WIP 🏗️
+Notificaiton history browser Android and Desktop app. Check the [original thread](https://twitter.com/mr_whoknows55/status/1789707352158986560) on twitter.
 
-* `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - `commonMain` is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    `iosMain` would be the right folder for such calls.
+## TODOs
+Project is currently in barebones stages, here are the todos:
+### General  
+- [ ] github issues/project setup
+- [ ] better readme
+- [ ] add licence
+- [ ] ci/cd setup
+- [ ] release binaries/executables for all supported platforms
+
+### Common:
+- [ ] share as much code and ui between both platforms
+- [ ] copy/share/export feature
+- [ ] support for full text search and complex filters
+- [ ] snooze/remind feature
+- [ ] group notifications by channel etc
+- [ ] snooze/remind feature
+- [ ] both desktop and mobile notifications combined support??
 
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+### Desktop:
+- [ ] improve ip scanning function (only supports /24 subnet currently)
+- [ ] improve desktop ux, make use of bigger screen real-estate
+- [ ] caching at the desktop app for offline support
+
+
+### Android:
+- [ ] create better screens
+- [ ] ssl certificate on mobile server so https only requests
+- [ ] auth and may be e2e encryption? as notifications data is sensitive
