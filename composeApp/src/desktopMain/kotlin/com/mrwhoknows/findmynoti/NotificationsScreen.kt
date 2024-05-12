@@ -2,6 +2,8 @@ package com.mrwhoknows.findmynoti
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -34,8 +37,7 @@ fun NotificationsScreen(notificationViewModel: NotificationViewModel) {
         LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(20.dp)) {
             stickyHeader {
                 var searchText by remember { mutableStateOf("") }
-                OutlinedTextField(
-                    value = searchText,
+                OutlinedTextField(value = searchText,
                     modifier = Modifier.fillMaxWidth()
                         .background(MaterialTheme.colorScheme.background),
                     leadingIcon = {
@@ -52,16 +54,32 @@ fun NotificationsScreen(notificationViewModel: NotificationViewModel) {
                     onValueChange = {
                         searchText = it
                         notificationViewModel.search(it)
-                    }
-                )
+                    })
                 Spacer(Modifier.size(20.dp))
             }
             items(notifications, key = { it.id }) {
-                Text(
-                    modifier = Modifier.padding(4.dp),
-                    text = it.toString(),
-                    color = MaterialTheme.colorScheme.onSurface
-                )
+                Card(
+                    Modifier.fillMaxWidth(),
+                    backgroundColor = MaterialTheme.colorScheme.primaryContainer
+                ) {
+                    Column(
+                        Modifier.padding(16.dp).fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        Text(
+                            text = it.title.ifBlank { "Untitled" },
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            style = MaterialTheme.typography.titleLarge,
+                            maxLines = 2
+                        )
+                        Text(
+                            text = it.content.ifBlank { "Empty Body" },
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+                }
+                Spacer(Modifier.size(8.dp))
             }
         }
     }
