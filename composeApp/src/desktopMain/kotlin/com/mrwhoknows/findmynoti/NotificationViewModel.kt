@@ -6,19 +6,22 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
-import io.ktor.http.Url
-import io.ktor.http.fullPath
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.net.URI
-import java.net.URL
 
-class NotificationViewModel(private val hostDevice: HostDevice) {
+@OptIn(FlowPreview::class)
+class NotificationViewModel(hostDevice: HostDevice) {
+    private val host = hostDevice.hostUrl
 
     private val ktorClient by lazy {
         HttpClient {
@@ -28,16 +31,42 @@ class NotificationViewModel(private val hostDevice: HostDevice) {
         }
     }
 
-    init {
-        getNotifications()
+    private val _searchKeyword = MutableStateFlow("")
+    private val _notifications = MutableStateFlow(listOf<NotificationDTO>())
+    val notifications = _notifications.asStateFlow()
+
+    fun search(keyword: String) {
+        _searchKeyword.update { keyword }
     }
 
-    private fun getNotifications() {
-        val host = with(URI.create(hostDevice.address)) {
-            "$scheme://$host:$port"
+    private var searchJob: Job? = null
+    private fun searchNotifications(keyword: String) {
+        if (keyword.isBlank()) {
+            getNotifications()
+            return
         }
-        println("main host: $host")
-        CoroutineScope(Dispatchers.IO).launch {
+        searchJob?.cancel()
+        fetchJob?.cancel()
+        searchJob = CoroutineScope(Dispatchers.IO).launch {
+            val notifications: List<NotificationDTO> = runCatching {
+                val list = ktorClient.get("$host/search/$keyword").body<List<NotificationDTO>>()
+                println("searchNotifications success: $list")
+                list
+            }.getOrElse {
+                println("searchNotifications error: $it")
+                emptyList()
+            }
+            _notifications.update {
+                notifications
+            }
+        }
+    }
+
+    private var fetchJob: Job? = null
+    private fun getNotifications() {
+        fetchJob?.cancel()
+        searchJob?.cancel()
+        fetchJob = CoroutineScope(Dispatchers.IO).launch {
             val notifications: List<NotificationDTO> = runCatching {
                 val list = ktorClient.get("$host/notifications").body<List<NotificationDTO>>()
                 println("success: $list")
@@ -52,11 +81,14 @@ class NotificationViewModel(private val hostDevice: HostDevice) {
         }
     }
 
-    private val _notifications = MutableStateFlow(listOf<NotificationDTO>())
-    val notifications = _notifications.asStateFlow()
 
-    fun search(query: String) {
-        // TODO
+    init {
+        getNotifications()
+        CoroutineScope(Dispatchers.IO).launch {
+            _searchKeyword.debounce(200).collectLatest {
+                searchNotifications(it)
+            }
+        }
     }
 
 }

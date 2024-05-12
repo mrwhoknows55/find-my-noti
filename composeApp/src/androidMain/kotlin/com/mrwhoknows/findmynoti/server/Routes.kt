@@ -2,8 +2,10 @@ package com.mrwhoknows.findmynoti.server
 
 import android.os.Build
 import android.util.Log
+import com.mrwhoknows.findmynoti.NotificationEntity
 import com.mrwhoknows.findmynoti.data.db.SQLiteNotificationsRepository
 import com.mrwhoknows.findmynoti.data.model.NotificationDTO
+import com.mrwhoknows.findmynoti.data.model.toDTO
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
@@ -32,17 +34,23 @@ fun Application.module(repository: SQLiteNotificationsRepository) {
         // TODO add pagination
         get("/notifications") {
             val notifications: List<NotificationDTO> = runCatching {
-                repository.getAllNotifications().take(50).map {
-                    NotificationDTO(
-                        id = it.id,
-                        title = it.title,
-                        content = it.content,
-                        packageName = it.packageName,
-                        appName = it.appName.orEmpty().ifBlank { it.packageName },
-                        timestamp = it.timestamp,
-                        imageUrl = it.imageUrl.orEmpty()
-                    )
-                }
+                repository.getAllNotifications().map(NotificationEntity::toDTO)
+            }.getOrElse {
+                Log.e(TAG, "/notifications: $it")
+                emptyList()
+            }
+            Log.i(TAG, "/notifications: ${notifications.size}: $notifications")
+            kotlin.runCatching {
+                call.respond(notifications)
+            }.getOrElse {
+                Log.e(TAG, "/notifications respond: $it")
+            }
+        }
+
+        get("/search/{keyword}") {
+            val keyword = call.parameters["keyword"].orEmpty()
+            val notifications: List<NotificationDTO> = runCatching {
+                repository.searchNotifications(keyword).map(NotificationEntity::toDTO)
             }.getOrElse {
                 Log.e(TAG, "/notifications: $it")
                 emptyList()

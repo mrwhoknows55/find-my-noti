@@ -17,7 +17,7 @@ class SQLiteNotificationsRepository(driverFactory: DriverFactory) : Notification
     override suspend fun insertNotification(entity: NotificationEntity) = withContext(IO) {
         with(entity) {
             database.notificationEntityQueries.insert(
-               title, content, packageName, appName, timestamp, imageUrl
+                title, content, packageName, appName, timestamp, imageUrl
             )
         }
     }
@@ -25,5 +25,11 @@ class SQLiteNotificationsRepository(driverFactory: DriverFactory) : Notification
     override suspend fun getNotificationByPackageName(packageName: String): List<NotificationEntity> =
         withContext(IO) {
             database.notificationEntityQueries.selectByPackageName(packageName).executeAsList()
+        }
+
+    override suspend fun searchNotifications(keyword: String): List<NotificationEntity> =
+        withContext(IO) {
+            val query = "%$keyword%"
+            database.notificationEntityQueries.searchByTitleOrContent(query, query).executeAsList()
         }
 }

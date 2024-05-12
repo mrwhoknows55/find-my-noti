@@ -1,10 +1,13 @@
 package com.mrwhoknows.findmynoti
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
@@ -33,7 +36,8 @@ fun NotificationsScreen(notificationViewModel: NotificationViewModel) {
                 var searchText by remember { mutableStateOf("") }
                 OutlinedTextField(
                     value = searchText,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.background),
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.Search,
@@ -41,6 +45,7 @@ fun NotificationsScreen(notificationViewModel: NotificationViewModel) {
                             tint = MaterialTheme.colorScheme.onSurface
                         )
                     },
+                    singleLine = true,
                     label = {
                         Text("search notification", color = MaterialTheme.colorScheme.onSurface)
                     },
@@ -49,8 +54,9 @@ fun NotificationsScreen(notificationViewModel: NotificationViewModel) {
                         notificationViewModel.search(it)
                     }
                 )
+                Spacer(Modifier.size(20.dp))
             }
-            items(notifications) {
+            items(notifications, key = { it.id }) {
                 Text(
                     modifier = Modifier.padding(4.dp),
                     text = it.toString(),

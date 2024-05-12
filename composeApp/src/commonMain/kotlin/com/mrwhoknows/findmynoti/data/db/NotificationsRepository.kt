@@ -6,4 +6,5 @@ interface NotificationsRepository {
     suspend fun getAllNotifications(): List<NotificationEntity>
     suspend fun insertNotification(entity: NotificationEntity)
     suspend fun getNotificationByPackageName(packageName: String): List<NotificationEntity>
+    suspend fun searchNotifications(keyword: String): List<NotificationEntity>
 }

@@ -11,14 +11,17 @@ CREATE TABLE  NotificationEntity(
 
 selectAll:
 SELECT *
-FROM NotificationEntity;
+FROM NotificationEntity ORDER BY timestamp DESC ;
 
 insert:
 INSERT INTO NotificationEntity(title, content, packageName, appName, timestamp, imageUrl)
 VALUES (?, ?, ?,?, ?, ?);
 
 selectById:
-SELECT * FROM NotificationEntity WHERE id = ?;
+SELECT * FROM NotificationEntity WHERE id = ? ORDER BY timestamp DESC ;
 
 selectByPackageName:
-SELECT * FROM NotificationEntity WHERE packageName = ?;
+SELECT * FROM NotificationEntity WHERE packageName = ? ORDER BY timestamp DESC ;
+
+searchByTitleOrContent:
+SELECT * FROM NotificationEntity WHERE LOWER(title) LIKE LOWER(?) OR LOWER(content) LIKE LOWER(?) ORDER BY timestamp DESC LIMIT 10;

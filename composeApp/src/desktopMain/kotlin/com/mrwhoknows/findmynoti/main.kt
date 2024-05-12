@@ -28,6 +28,7 @@ fun main() = application {
             AnimatedContent(selectedHostDevice) { hostDevice ->
                 if (hostDevice == null) {
                     MainScreen(viewModel) {
+                        viewModel.stopFinding()
                         selectedHostDevice = it
                     }
                 } else {

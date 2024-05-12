@@ -1,5 +1,6 @@
 package com.mrwhoknows.findmynoti.data.model
 
+import com.mrwhoknows.findmynoti.NotificationEntity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -21,3 +22,14 @@ data class NotificationDTO(
     @SerialName("imageUrl")
     val imageUrl: String
 )
+
+fun NotificationEntity.toDTO() =
+    NotificationDTO(
+        id = id,
+        title = title,
+        content = content,
+        packageName = packageName,
+        appName = appName.orEmpty().ifBlank { packageName },
+        timestamp = timestamp,
+        imageUrl = imageUrl.orEmpty()
+    )

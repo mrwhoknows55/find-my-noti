@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.NetworkInterface
 import java.net.SocketException
+import java.net.URI
 
 data class Address(
     val address: String,
@@ -30,7 +31,12 @@ data class Address(
 data class HostDevice(
     val address: String,
     val deviceName: String
-)
+) {
+    val hostUrl: String
+        get() = with(URI.create(address)) {
+            "$scheme://$host:$port"
+        }
+}
 
 class DeviceFinder {
     private val client = HttpClient {
