@@ -1,10 +1,9 @@
-package com.mrwhoknows.findmynoti.server
+package com.mrwhoknows.findmynoti.data.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 
-// TODO can be moved to common module
 @Serializable
 data class NotificationDTO(
     @SerialName("id")

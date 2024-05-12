@@ -2,8 +2,8 @@ package com.mrwhoknows.findmynoti.server
 
 import android.os.Build
 import android.util.Log
-import com.mrwhoknows.findmynoti.NotificationEntity
 import com.mrwhoknows.findmynoti.data.db.SQLiteNotificationsRepository
+import com.mrwhoknows.findmynoti.data.model.NotificationDTO
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
