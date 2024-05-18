@@ -13,6 +13,10 @@ selectAll:
 SELECT *
 FROM NotificationEntity ORDER BY timestamp DESC ;
 
+selectAllByOffsetAndLimit:
+SELECT *
+FROM NotificationEntity ORDER BY timestamp DESC LIMIT ? OFFSET ?;
+
 insert:
 INSERT INTO NotificationEntity(title, content, packageName, appName, timestamp, imageUrl)
 VALUES (?, ?, ?,?, ?, ?);

@@ -1,7 +1,7 @@
-package com.mrwhoknows.findmynoti
+package com.mrwhoknows.findmynoti.ui.noti
 
-import com.mrwhoknows.findmynoti.data.HostDevice
 import com.mrwhoknows.findmynoti.data.model.NotificationDTO
+import com.mrwhoknows.findmynoti.server.HostDevice
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -11,7 +11,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest

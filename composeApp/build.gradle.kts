@@ -28,11 +28,10 @@ kotlin {
             implementation(libs.androidx.material)
             implementation(libs.koin.android)
 
-            // ktor server for android
-            implementation(libs.ktor.server.netty.jvm)
-            implementation(libs.ktor.server.content.negotiation)
-
             implementation(libs.sqldelight.android.driver)
+
+            implementation(libs.quickie.unbundled)
+            implementation(libs.ktor.client.okhttp)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -50,11 +49,18 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
+
+            // ktor server dependencies
+            implementation(libs.ktor.server.netty.jvm)
+            implementation(libs.ktor.server.content.negotiation)
+
+            // qr code generation
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.sqldelight.jvm.driver)
+            implementation(libs.qrose)
         }
     }
 }

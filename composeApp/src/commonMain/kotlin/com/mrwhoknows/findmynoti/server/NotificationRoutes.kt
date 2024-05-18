@@ -1,8 +1,7 @@
 package com.mrwhoknows.findmynoti.server
 
-import android.os.Build
-import android.util.Log
 import com.mrwhoknows.findmynoti.NotificationEntity
+import com.mrwhoknows.findmynoti.Platform
 import com.mrwhoknows.findmynoti.data.db.SQLiteNotificationsRepository
 import com.mrwhoknows.findmynoti.data.model.NotificationDTO
 import com.mrwhoknows.findmynoti.data.model.toDTO
@@ -16,9 +15,10 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 
-// TODO can be moved to shared module
-private const val TAG = "Routes"
-fun Application.module(repository: SQLiteNotificationsRepository) {
+fun Application.notificationRoutes(
+    repository: SQLiteNotificationsRepository,
+    platform: Platform
+) {
     install(ContentNegotiation) {
         json()
     }
@@ -26,7 +26,7 @@ fun Application.module(repository: SQLiteNotificationsRepository) {
     routing {
         get("/ping") {
             call.respond(
-                message = Build.MANUFACTURER + " " + Build.MODEL.ifBlank { Build.PRODUCT },
+                message = platform.deviceName,
                 status = HttpStatusCode.OK
             )
         }
@@ -34,16 +34,16 @@ fun Application.module(repository: SQLiteNotificationsRepository) {
         // TODO add pagination
         get("/notifications") {
             val notifications: List<NotificationDTO> = runCatching {
-                repository.getAllNotifications().map(NotificationEntity::toDTO)
+                repository.getNotificationByOffsetAndLimit(limit = 0, offset = 50).map(NotificationEntity::toDTO)
             }.getOrElse {
-                Log.e(TAG, "/notifications: $it")
+                println("/notifications: $it")
                 emptyList()
             }
-            Log.i(TAG, "/notifications: ${notifications.size}: $notifications")
+            println("/notifications: ${notifications.size}: $notifications")
             kotlin.runCatching {
                 call.respond(notifications)
             }.getOrElse {
-                Log.e(TAG, "/notifications respond: $it")
+                println("/notifications respond: $it")
             }
         }
 
@@ -52,14 +52,14 @@ fun Application.module(repository: SQLiteNotificationsRepository) {
             val notifications: List<NotificationDTO> = runCatching {
                 repository.searchNotifications(keyword).map(NotificationEntity::toDTO)
             }.getOrElse {
-                Log.e(TAG, "/notifications: $it")
+                println("/notifications: $it")
                 emptyList()
             }
-            Log.i(TAG, "/notifications: ${notifications.size}: $notifications")
+            println("/notifications: ${notifications.size}: $notifications")
             kotlin.runCatching {
                 call.respond(notifications)
             }.getOrElse {
-                Log.e(TAG, "/notifications respond: $it")
+                println("/notifications respond: $it")
             }
         }
     }

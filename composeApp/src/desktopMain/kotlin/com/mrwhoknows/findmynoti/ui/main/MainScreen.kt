@@ -1,4 +1,4 @@
-package com.mrwhoknows.findmynoti
+package com.mrwhoknows.findmynoti.ui.main
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -31,7 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.mrwhoknows.findmynoti.data.HostDevice
+import com.mrwhoknows.findmynoti.server.HostDevice
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalFoundationApi::class)

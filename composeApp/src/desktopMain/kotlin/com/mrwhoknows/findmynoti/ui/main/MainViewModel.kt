@@ -1,7 +1,7 @@
-package com.mrwhoknows.findmynoti
+package com.mrwhoknows.findmynoti.ui.main
 
 import com.mrwhoknows.findmynoti.data.DeviceFinder
-import com.mrwhoknows.findmynoti.data.HostDevice
+import com.mrwhoknows.findmynoti.server.HostDevice
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

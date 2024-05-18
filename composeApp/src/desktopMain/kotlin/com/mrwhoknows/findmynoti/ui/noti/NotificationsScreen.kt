@@ -1,4 +1,4 @@
-package com.mrwhoknows.findmynoti
+package com.mrwhoknows.findmynoti.ui.noti
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -84,4 +84,3 @@ fun NotificationsScreen(notificationViewModel: NotificationViewModel) {
         }
     }
 }
-

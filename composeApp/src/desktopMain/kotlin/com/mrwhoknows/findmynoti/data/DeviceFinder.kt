@@ -1,6 +1,7 @@
 package com.mrwhoknows.findmynoti.data
 
 import androidx.compose.runtime.Stable
+import com.mrwhoknows.findmynoti.server.HostDevice
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -27,16 +28,7 @@ data class Address(
     val subnetMask: Int
 )
 
-@Stable
-data class HostDevice(
-    val address: String,
-    val deviceName: String
-) {
-    val hostUrl: String
-        get() = with(URI.create(address)) {
-            "$scheme://$host:$port"
-        }
-}
+
 
 class DeviceFinder {
     private val client = HttpClient {
