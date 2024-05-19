@@ -1,6 +1,7 @@
 package com.mrwhoknows.findmynoti
 
 import android.app.Application
+import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import com.mrwhoknows.findmynoti.di.appModule
@@ -14,6 +15,7 @@ class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        instance = this
         startKoin {
             androidContext(this@MainApplication)
             androidLogger()
@@ -33,4 +35,12 @@ class MainApplication : Application() {
             false
         }
     }
+
+    companion object {
+        private var instance: MainApplication? = null
+
+        val applicationContext: Context
+            get() = instance!!.applicationContext
+    }
+
 }

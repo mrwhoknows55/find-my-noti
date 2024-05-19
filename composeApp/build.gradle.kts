@@ -46,15 +46,20 @@ kotlin {
 
             // ktor client + common dependencies
             implementation(libs.ktor.client.core)
-            implementation(libs.kotlinx.serialization.json)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.kotlinx.serialization.json)
 
             // ktor server dependencies
             implementation(libs.ktor.server.netty.jvm)
             implementation(libs.ktor.server.content.negotiation)
 
-            implementation("io.github.aakira:napier:2.7.1")
+            // kv-store
+            implementation("com.russhwolf:multiplatform-settings:1.1.1")
+
+            // logger
+            implementation(libs.napier)
+
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

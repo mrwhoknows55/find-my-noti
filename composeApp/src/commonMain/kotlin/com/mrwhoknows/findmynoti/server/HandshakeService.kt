@@ -1,13 +1,15 @@
 package com.mrwhoknows.findmynoti.server
 
 import androidx.compose.runtime.Stable
+import com.mrwhoknows.findmynoti.data.settings.AppSettings
+import com.mrwhoknows.findmynoti.util.Constants
 import com.mrwhoknows.findmynoti.util.currentPrivateIPAddress
 import com.mrwhoknows.findmynoti.util.getUnusedRandomPortNumber
+import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
-import io.ktor.http.HttpStatusCode
 import io.ktor.http.URLBuilder
 import io.ktor.http.URLProtocol
 import io.ktor.http.isSuccess
@@ -17,12 +19,14 @@ import io.ktor.server.application.call
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.server.netty.NettyApplicationEngine
-import io.ktor.server.response.respond
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.net.URI
 
 @Stable
@@ -49,32 +53,59 @@ class HandshakeService {
     private val _result = MutableStateFlow(HandshakeServiceState())
     val result = _result.asStateFlow()
 
+    init {
+        Napier.base(DebugAntilog())
+        CoroutineScope(Dispatchers.IO).launch {
+            val notificationServerUrl = AppSettings.notificationServerUrl
+            if (notificationServerUrl.isBlank()) {
+                return@launch
+            }
+            tryConnectingToServer(
+                notificationServerUrl,
+                onSuccess = {
+                    // No-Op
+                },
+                onFailure = {
+                    // No-Op
+                },
+            )
+        }
+    }
+
     private fun Application.handshakeRoutes() = routing {
         get("/handshake") {
             val notificationServerUrl =
-                call.request.queryParameters["notificationServerUrl"].orEmpty()
+                call.request.queryParameters[Constants.NotificationServerUrl.name].orEmpty()
             Napier.i("notificationServerUrl: $notificationServerUrl")
 
-            HttpClient().use { client ->
-                val response = client.get("$notificationServerUrl/ping")
-                if (response.status.isSuccess()) {
-                    _result.update {
-                        it.copy(
-                            hostDevice = HostDevice(
-                                notificationServerUrl,
-                                response.bodyAsText()
-                            )
-                        )
-                    }
-                    call.respond(status = HttpStatusCode.Accepted, "Connection established")
-                } else {
-                    _result.update {
-                        it.copy(error = "connection failed")
-                    }
-                    call.respond(status = HttpStatusCode.NotFound, "Connection Failed")
-                }
-            }
+            tryConnectingToServer(notificationServerUrl)
+        }
+    }
 
+    private suspend fun tryConnectingToServer(
+        notificationServerUrl: String,
+        onSuccess: suspend () -> Unit = {},
+        onFailure: suspend () -> Unit = {}
+    ) {
+        HttpClient().use { client ->
+            val response = client.get("$notificationServerUrl/ping")
+            if (response.status.isSuccess()) {
+                _result.update {
+                    it.copy(
+                        hostDevice = HostDevice(
+                            notificationServerUrl,
+                            response.bodyAsText()
+                        )
+                    )
+                }
+                AppSettings.setNotificationServerUrl(notificationServerUrl)
+                onSuccess()
+            } else {
+                _result.update {
+                    it.copy(error = "connection failed")
+                }
+                onFailure()
+            }
         }
     }
 
