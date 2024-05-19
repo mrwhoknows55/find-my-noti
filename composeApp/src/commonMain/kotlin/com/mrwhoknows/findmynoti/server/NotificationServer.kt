@@ -4,6 +4,7 @@ import com.mrwhoknows.findmynoti.data.db.SQLiteNotificationsRepository
 import com.mrwhoknows.findmynoti.util.Platform
 import com.mrwhoknows.findmynoti.util.currentPrivateIPAddress
 import com.mrwhoknows.findmynoti.util.getUnusedRandomPortNumber
+import io.github.aakira.napier.Napier
 import io.ktor.http.URLBuilder
 import io.ktor.http.URLProtocol
 import io.ktor.server.engine.embeddedServer
@@ -22,7 +23,7 @@ class NotificationServer(
 
     val serverIpAddress: String
         get() {
-            println("currentPrivateIPAddress: $currentPrivateIPAddress")
+            Napier.i("currentPrivateIPAddress: $currentPrivateIPAddress")
             return URLBuilder().apply {
                 protocol = URLProtocol.HTTP
                 host = currentPrivateIPAddress
@@ -38,11 +39,11 @@ class NotificationServer(
                     Netty,
                     port = portNumber,
                     module = { notificationRoutes(repository, platform = platform) })
-            println("startServer: ${server.application}")
+            Napier.i("startServer: ${server.application}")
             server.start()
         }.onFailure {
             // TODO handle binder failure error
-            println("startServer: $it")
+            Napier.i("startServer: $it")
         }
     }
 
@@ -50,6 +51,6 @@ class NotificationServer(
         server.stop()
     }.getOrElse {
         // TODO handle error
-        println("stopServer: $it")
+        Napier.i("stopServer: $it")
     }
 }

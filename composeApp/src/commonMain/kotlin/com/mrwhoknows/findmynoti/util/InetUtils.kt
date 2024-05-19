@@ -30,7 +30,6 @@ tailrec fun getUnusedRandomPortNumber(): Int {
 }
 
 fun Int.isPortUnused(): Boolean = runCatching {
-    println("isPortUnused: $this")
     val serverSocket = ServerSocket(this)
     serverSocket.close()
     true

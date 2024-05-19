@@ -3,6 +3,7 @@ package com.mrwhoknows.findmynoti.server
 import androidx.compose.runtime.Stable
 import com.mrwhoknows.findmynoti.util.currentPrivateIPAddress
 import com.mrwhoknows.findmynoti.util.getUnusedRandomPortNumber
+import io.github.aakira.napier.Napier
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
@@ -52,7 +53,7 @@ class HandshakeService {
         get("/handshake") {
             val notificationServerUrl =
                 call.request.queryParameters["notificationServerUrl"].orEmpty()
-            println("notificationServerUrl: $notificationServerUrl")
+            Napier.i("notificationServerUrl: $notificationServerUrl")
 
             HttpClient().use { client ->
                 val response = client.get("$notificationServerUrl/ping")
@@ -79,7 +80,7 @@ class HandshakeService {
 
     fun startServer() {
         val portNumber = getUnusedRandomPortNumber()
-        println("port number: $portNumber")
+        Napier.i("port number: $portNumber")
         runCatching {
             server = embeddedServer(
                 Netty,
@@ -93,17 +94,17 @@ class HandshakeService {
                 protocol = URLProtocol.HTTP
                 host = currentPrivateIPAddress
                 port = portNumber
-                println("handshake server started on: $this")
+                Napier.i("handshake server started on: $this")
                 path("handshake")
             }.buildString()
-            println("handshake server url: $address")
+            Napier.i("handshake server url: $address")
 
             _result.update {
                 it.copy(qrCodeText = address)
             }
         }.onFailure {
             // TODO handle binder failure error
-            println("startServer: $it")
+            Napier.i("startServer: $it")
 
             _result.update { state ->
                 state.copy(error = it.localizedMessage)
@@ -112,10 +113,10 @@ class HandshakeService {
     }
 
 
-    fun stopServer() = kotlin.runCatching {
+    fun stopServer() = runCatching {
         server.stop()
     }.getOrElse {
         // TODO handle error
-        println("stopServer: $it")
+        Napier.i("stopServer: $it")
     }
 }

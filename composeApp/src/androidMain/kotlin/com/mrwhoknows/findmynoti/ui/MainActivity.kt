@@ -26,6 +26,7 @@ import androidx.core.app.NotificationManagerCompat
 import com.mrwhoknows.findmynoti.server.NotificationServer
 import com.mrwhoknows.findmynoti.ui.theme.AppTheme
 import com.mrwhoknows.findmynoti.util.showShortToast
+import io.github.aakira.napier.Napier
 import io.github.g00fy2.quickie.QRResult
 import io.github.g00fy2.quickie.ScanQRCode
 import io.github.g00fy2.quickie.content.QRContent
@@ -50,12 +51,12 @@ class MainActivity : ComponentActivity() {
                     val context = LocalContext.current
                     val scanQrCodeLauncher =
                         rememberLauncherForActivityResult(ScanQRCode()) { result ->
-                            println("scanQrCodeLauncher: $result")
+                            Napier.i("scanQrCodeLauncher: $result")
                             when (result) {
                                 is QRResult.QRSuccess -> {
                                     if (result.content is QRContent.Url) {
                                         val desktopAddress = result.content.rawValue.orEmpty()
-                                        println("desktopAddress: $desktopAddress}")
+                                        Napier.i("desktopAddress: $desktopAddress}")
                                         viewModel.connectWithDesktop(
                                             desktopAddress,
                                             server.serverIpAddress

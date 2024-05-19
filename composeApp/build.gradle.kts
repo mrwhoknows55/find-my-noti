@@ -54,12 +54,14 @@ kotlin {
             implementation(libs.ktor.server.netty.jvm)
             implementation(libs.ktor.server.content.negotiation)
 
-            // qr code generation
+            implementation("io.github.aakira:napier:2.7.1")
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.sqldelight.jvm.driver)
+
+            // qr code generation
             implementation(libs.qrose)
         }
     }

@@ -3,6 +3,7 @@ package com.mrwhoknows.findmynoti.ui.noti
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -12,9 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -33,8 +34,13 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun NotificationsScreen(notificationViewModel: NotificationViewModel) {
     val notifications by notificationViewModel.notifications.collectAsState()
-    Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.surface) {
-        LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(20.dp)) {
+    Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)) {
+        val scrollState = rememberLazyListState()
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            state = scrollState,
+            contentPadding = PaddingValues(20.dp)
+        ) {
             stickyHeader {
                 var searchText by remember { mutableStateOf("") }
                 OutlinedTextField(value = searchText,

@@ -18,9 +18,15 @@ import com.mrwhoknows.findmynoti.ui.handshake.QRCodeConnectionScreen
 import com.mrwhoknows.findmynoti.ui.noti.NotificationViewModel
 import com.mrwhoknows.findmynoti.ui.noti.NotificationsScreen
 import com.mrwhoknows.findmynoti.ui.theme.AppTheme
+import com.mrwhoknows.findmynoti.util.isDebug
+import io.github.aakira.napier.DebugAntilog
+import io.github.aakira.napier.Napier
 import java.awt.Dimension
 
 fun main() = application {
+    if (isDebug) {
+        Napier.base(DebugAntilog())
+    }
     Window(
         onCloseRequest = ::exitApplication,
         title = "Find My Notification",
@@ -53,6 +59,7 @@ fun main() = application {
                     if (handshakeServiceState.hostDevice == null) {
                         QRCodeConnectionScreen(handshakeServiceState)
                     } else {
+                        handshakeService.stopServer()
                         val notificationViewModel =
                             NotificationViewModel(handshakeServiceState.hostDevice)
                         NotificationsScreen(notificationViewModel)

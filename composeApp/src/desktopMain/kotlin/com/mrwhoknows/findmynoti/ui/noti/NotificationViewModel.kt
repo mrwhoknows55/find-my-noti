@@ -2,6 +2,7 @@ package com.mrwhoknows.findmynoti.ui.noti
 
 import com.mrwhoknows.findmynoti.data.model.NotificationDTO
 import com.mrwhoknows.findmynoti.server.HostDevice
+import io.github.aakira.napier.Napier
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -49,10 +50,10 @@ class NotificationViewModel(hostDevice: HostDevice) {
         searchJob = CoroutineScope(Dispatchers.IO).launch {
             val notifications: List<NotificationDTO> = runCatching {
                 val list = ktorClient.get("$host/search/$keyword").body<List<NotificationDTO>>()
-                println("searchNotifications success: $list")
+                Napier.i("searchNotifications success: $list")
                 list
             }.getOrElse {
-                println("searchNotifications error: $it")
+                Napier.i("searchNotifications error: $it")
                 emptyList()
             }
             _notifications.update {
@@ -68,10 +69,10 @@ class NotificationViewModel(hostDevice: HostDevice) {
         fetchJob = CoroutineScope(Dispatchers.IO).launch {
             val notifications: List<NotificationDTO> = runCatching {
                 val list = ktorClient.get("$host/notifications").body<List<NotificationDTO>>()
-                println("success: $list")
+                Napier.i("success: $list")
                 list
             }.getOrElse {
-                println("get error: $it")
+                Napier.i("get error: $it")
                 emptyList()
             }
             _notifications.update {

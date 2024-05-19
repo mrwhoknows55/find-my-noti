@@ -1,10 +1,11 @@
 package com.mrwhoknows.findmynoti.server
 
 import com.mrwhoknows.findmynoti.NotificationEntity
-import com.mrwhoknows.findmynoti.util.Platform
 import com.mrwhoknows.findmynoti.data.db.SQLiteNotificationsRepository
 import com.mrwhoknows.findmynoti.data.model.NotificationDTO
 import com.mrwhoknows.findmynoti.data.model.toDTO
+import com.mrwhoknows.findmynoti.util.Platform
+import io.github.aakira.napier.Napier
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
@@ -36,14 +37,14 @@ fun Application.notificationRoutes(
             val notifications: List<NotificationDTO> = runCatching {
                 repository.getNotificationByOffsetAndLimit(limit = 0, offset = 50).map(NotificationEntity::toDTO)
             }.getOrElse {
-                println("/notifications: $it")
+                Napier.i("/notifications: $it")
                 emptyList()
             }
-            println("/notifications: ${notifications.size}: $notifications")
+            Napier.i("/notifications: ${notifications.size}: $notifications")
             kotlin.runCatching {
                 call.respond(notifications)
             }.getOrElse {
-                println("/notifications respond: $it")
+                Napier.i("/notifications respond: $it")
             }
         }
 
@@ -52,14 +53,14 @@ fun Application.notificationRoutes(
             val notifications: List<NotificationDTO> = runCatching {
                 repository.searchNotifications(keyword).map(NotificationEntity::toDTO)
             }.getOrElse {
-                println("/notifications: $it")
+                Napier.i("/notifications: $it")
                 emptyList()
             }
-            println("/notifications: ${notifications.size}: $notifications")
+            Napier.i("/notifications: ${notifications.size}: $notifications")
             kotlin.runCatching {
                 call.respond(notifications)
             }.getOrElse {
-                println("/notifications respond: $it")
+                Napier.i("/notifications respond: $it")
             }
         }
     }
