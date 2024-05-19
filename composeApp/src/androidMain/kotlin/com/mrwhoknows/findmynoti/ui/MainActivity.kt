@@ -1,4 +1,4 @@
-package com.mrwhoknows.findmynoti
+package com.mrwhoknows.findmynoti.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -23,40 +23,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.NotificationManagerCompat
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.mrwhoknows.findmynoti.server.NotificationServer
 import com.mrwhoknows.findmynoti.ui.theme.AppTheme
 import com.mrwhoknows.findmynoti.util.showShortToast
 import io.github.g00fy2.quickie.QRResult
 import io.github.g00fy2.quickie.ScanQRCode
 import io.github.g00fy2.quickie.content.QRContent
-import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.request.get
-import io.ktor.client.statement.bodyAsText
-import io.ktor.http.URLBuilder
-import io.ktor.http.Url
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-
-
-class HandshakeViewModel : ViewModel() {
-
-    fun connectWithDesktop(desktopUrl: String, notificationServerUrl: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val url = URLBuilder(desktopUrl).apply {
-                parameters.append("notificationServerUrl", notificationServerUrl)
-            }.build()
-            println("connectWithDesktop: $url")
-            val result = HttpClient().use {
-                it.get(url)
-            }
-            println(result.bodyAsText())
-        }
-    }
-}
 
 class MainActivity : ComponentActivity() {
 
@@ -78,20 +51,19 @@ class MainActivity : ComponentActivity() {
                     val scanQrCodeLauncher =
                         rememberLauncherForActivityResult(ScanQRCode()) { result ->
                             println("scanQrCodeLauncher: $result")
-                            // handle QRResult
                             when (result) {
                                 is QRResult.QRSuccess -> {
                                     if (result.content is QRContent.Url) {
-                                        println("desktopIP: ${result.content.rawValue.toString()}")
+                                        val desktopAddress = result.content.rawValue.orEmpty()
+                                        println("desktopAddress: $desktopAddress}")
                                         viewModel.connectWithDesktop(
-                                            result.content.rawValue.orEmpty(),
-                                            "http://192.168.1.6:1337"
+                                            desktopAddress,
+                                            server.serverIpAddress
                                         )
                                     } else {
                                         context.showShortToast("invalid qr code")
                                     }
                                 }
-
                                 is QRResult.QRError -> {
                                     context.showShortToast("error: ${result.exception}")
                                 }

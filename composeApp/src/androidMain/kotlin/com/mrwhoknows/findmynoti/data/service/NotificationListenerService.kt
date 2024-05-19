@@ -1,15 +1,17 @@
-package com.mrwhoknows.findmynoti
+package com.mrwhoknows.findmynoti.data.service
 
 import android.app.Notification
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import com.mrwhoknows.findmynoti.NotificationEntity
 import com.mrwhoknows.findmynoti.data.db.SQLiteNotificationsRepository
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+
 
 private const val TAG = "NotificationListenerSer"
 
@@ -69,4 +71,3 @@ class NotificationListenerService : NotificationListenerService() {
         // No-Op
     }
 }
-

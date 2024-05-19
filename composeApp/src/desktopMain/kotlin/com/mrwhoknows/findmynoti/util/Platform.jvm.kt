@@ -1,5 +1,6 @@
-package com.mrwhoknows.findmynoti
+package com.mrwhoknows.findmynoti.util
 
+import com.mrwhoknows.findmynoti.util.Platform
 import java.net.InetAddress
 
 class JVMPlatform : Platform {

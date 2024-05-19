@@ -1,6 +1,8 @@
 package com.mrwhoknows.findmynoti.server
 
 import androidx.compose.runtime.Stable
+import com.mrwhoknows.findmynoti.util.currentPrivateIPAddress
+import com.mrwhoknows.findmynoti.util.getUnusedRandomPortNumber
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
@@ -20,10 +22,7 @@ import io.ktor.server.routing.routing
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import java.net.InetAddress
-import java.net.NetworkInterface
 import java.net.URI
-import kotlin.random.Random
 
 @Stable
 data class HostDevice(
@@ -56,9 +55,16 @@ class HandshakeService {
             println("notificationServerUrl: $notificationServerUrl")
 
             HttpClient().use { client ->
-                val response  = client.get("$notificationServerUrl/ping")
+                val response = client.get("$notificationServerUrl/ping")
                 if (response.status.isSuccess()) {
-                    _result.update { it.copy(hostDevice = HostDevice(notificationServerUrl, response.bodyAsText())) }
+                    _result.update {
+                        it.copy(
+                            hostDevice = HostDevice(
+                                notificationServerUrl,
+                                response.bodyAsText()
+                            )
+                        )
+                    }
                     call.respond(status = HttpStatusCode.Accepted, "Connection established")
                 } else {
                     _result.update {
@@ -72,7 +78,8 @@ class HandshakeService {
     }
 
     fun startServer() {
-        val portNumber = Random.nextInt(49152, 60000)
+        val portNumber = getUnusedRandomPortNumber()
+        println("port number: $portNumber")
         runCatching {
             server = embeddedServer(
                 Netty,
@@ -84,7 +91,7 @@ class HandshakeService {
             server.start()
             val address = URLBuilder().apply {
                 protocol = URLProtocol.HTTP
-                host = getCurrentPrivateIPAddress()
+                host = currentPrivateIPAddress
                 port = portNumber
                 println("handshake server started on: $this")
                 path("handshake")
@@ -97,21 +104,11 @@ class HandshakeService {
         }.onFailure {
             // TODO handle binder failure error
             println("startServer: $it")
-        }
-    }
 
-    private fun getCurrentPrivateIPAddress(): String {
-        val interfaces = NetworkInterface.getNetworkInterfaces()
-        for (networkInterface in interfaces) {
-            if (!networkInterface.isUp || networkInterface.isLoopback) continue
-
-            for (inetAddress in networkInterface.inetAddresses) {
-                if (!inetAddress.isLoopbackAddress && inetAddress is InetAddress && inetAddress.address.size == 4) {
-                    return inetAddress.hostAddress
-                }
+            _result.update { state ->
+                state.copy(error = it.localizedMessage)
             }
         }
-        return ""
     }
 
 

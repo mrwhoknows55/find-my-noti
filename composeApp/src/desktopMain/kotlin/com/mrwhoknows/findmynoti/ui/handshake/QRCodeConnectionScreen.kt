@@ -43,13 +43,13 @@ fun QRCodeConnectionScreen(
                                 dark = QrBrush.solid(MaterialTheme.colorScheme.primary),
                             )
                         ),
-                        contentDescription = "QR code referring to the example.com website",
+                        contentDescription = "QR code",
                     )
 
                     Spacer(Modifier.size(20.dp))
 
                     Text(
-                        "Scan this QR code from FindMyNotification Android app to connect with Desktop",
+                        text = "Scan this QR code from FindMyNotification Android app to connect with Desktop",
                         color = MaterialTheme.colorScheme.onSurface
                     )
                 }

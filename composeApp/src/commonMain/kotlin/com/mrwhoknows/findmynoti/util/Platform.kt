@@ -1,4 +1,4 @@
-package com.mrwhoknows.findmynoti
+package com.mrwhoknows.findmynoti.util
 
 interface Platform {
     val name: String

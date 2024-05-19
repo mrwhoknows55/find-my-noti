@@ -1,7 +1,7 @@
 package com.mrwhoknows.findmynoti.server
 
 import com.mrwhoknows.findmynoti.NotificationEntity
-import com.mrwhoknows.findmynoti.Platform
+import com.mrwhoknows.findmynoti.util.Platform
 import com.mrwhoknows.findmynoti.data.db.SQLiteNotificationsRepository
 import com.mrwhoknows.findmynoti.data.model.NotificationDTO
 import com.mrwhoknows.findmynoti.data.model.toDTO

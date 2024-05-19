@@ -38,7 +38,7 @@ fun NotificationsScreen(notificationViewModel: NotificationViewModel) {
             stickyHeader {
                 var searchText by remember { mutableStateOf("") }
                 OutlinedTextField(value = searchText,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
                         .background(MaterialTheme.colorScheme.background),
                     leadingIcon = {
                         Icon(
