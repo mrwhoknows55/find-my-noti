@@ -1,5 +1,5 @@
 [versions]
-agp = "8.4.0"
+agp = "8.4.1"
 android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
@@ -11,13 +11,14 @@ androidx-espresso-core = "3.5.1"
 androidx-material = "1.12.0"
 androidx-test-junit = "1.1.5"
 compose = "1.6.7"
-compose-plugin = "1.6.2"
+compose-plugin = "1.6.10"
 junit = "4.13.2"
 koin = "3.5.6"
-kotlin = "1.9.23"
+kotlin = "2.0.0"
 kotlinxSerializationJson = "1.6.3"
 ktorVersion = "2.3.11"
 materialkolor = "1.4.4"
+multiplatformSettings = "1.1.1"
 napier = "2.7.1"
 qrose = "1.0.0"
 quickieUnbundled = "1.10.0"
@@ -47,6 +48,7 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktorVersion" }
 ktor-server-netty-jvm = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktorVersion" }
 materialkolor = { module = "com.materialkolor:material-kolor", version.ref = "materialkolor" }
+multiplatform-settings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettings" }
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 qrose = { module = "io.github.alexzhirkevich:qrose", version.ref = "qrose" }
 quickie-unbundled = { module = "io.github.g00fy2.quickie:quickie-unbundled", version.ref = "quickieUnbundled" }
@@ -60,3 +62,4 @@ jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqlDelightVersion"}
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

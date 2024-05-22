@@ -4,19 +4,17 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.sqldelight)
 }
 
 kotlin {
     androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "11"
-            }
+        kotlin {
+            jvmToolchain(11)
         }
     }
-
     jvm("desktop")
 
     sourceSets {
@@ -55,7 +53,7 @@ kotlin {
             implementation(libs.ktor.server.content.negotiation)
 
             // kv-store
-            implementation("com.russhwolf:multiplatform-settings:1.1.1")
+            implementation(libs.multiplatform.settings)
 
             // logger
             implementation(libs.napier)
