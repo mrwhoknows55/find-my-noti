@@ -24,7 +24,7 @@ class SQLiteNotificationsRepository(driverFactory: DriverFactory) : Notification
     override suspend fun insertNotification(entity: NotificationEntity) = withContext(IO) {
         with(entity) {
             database.notificationEntityQueries.insert(
-                title, content, packageName, appName, timestamp, imageUrl
+                id, title, content, packageName, appName, timestamp, imageUrl
             )
         }
     }

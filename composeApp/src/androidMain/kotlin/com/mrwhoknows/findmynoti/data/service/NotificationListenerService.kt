@@ -37,9 +37,10 @@ class NotificationListenerService : NotificationListenerService() {
         val packageName = sbn.packageName
         val notification = sbn.notification
         val extras = notification.extras
-        Log.d(TAG, "onNotificationPosted: extras: $extras")
         val title = extras.getCharSequence(Notification.EXTRA_TITLE, "").toString()
         val content = extras.getCharSequence(Notification.EXTRA_TEXT, "").toString()
+        Log.d(TAG, "onNotificationPosted: $title -> $content -> sbn: $sbn")
+        Log.i(TAG, "onNotificationPosted: extras: $extras")
         val timestamp = sbn.postTime
         val image = extras.getString(Notification.EXTRA_PICTURE).orEmpty()
 
@@ -54,7 +55,7 @@ class NotificationListenerService : NotificationListenerService() {
 
         insertNotification(
             NotificationEntity(
-                id = -1, // auto increments
+                id = sbn.id.toLong(),
                 title = title,
                 content = content,
                 packageName = packageName,

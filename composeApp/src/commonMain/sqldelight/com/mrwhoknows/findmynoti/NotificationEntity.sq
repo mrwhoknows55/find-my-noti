@@ -1,11 +1,12 @@
 CREATE TABLE  NotificationEntity(
-    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    id INTEGER NOT NULL,
     title TEXT NOT NULL ,
     content TEXT NOT NULL,
     packageName TEXT NOT NULL,
     appName TEXT,
     timestamp INTEGER NOT NULL,
-    imageUrl TEXT
+    imageUrl TEXT,
+    PRIMARY KEY (id, packageName)
 );
 
 
@@ -18,8 +19,8 @@ SELECT *
 FROM NotificationEntity ORDER BY timestamp DESC LIMIT ? OFFSET ?;
 
 insert:
-INSERT INTO NotificationEntity(title, content, packageName, appName, timestamp, imageUrl)
-VALUES (?, ?, ?,?, ?, ?);
+INSERT OR REPLACE INTO NotificationEntity(id, title, content, packageName, appName, timestamp, imageUrl)
+VALUES (?, ?, ?, ?,?, ?, ?);
 
 selectById:
 SELECT * FROM NotificationEntity WHERE id = ? ORDER BY timestamp DESC ;
