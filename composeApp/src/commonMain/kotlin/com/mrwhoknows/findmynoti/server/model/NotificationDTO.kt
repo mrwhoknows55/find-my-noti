@@ -1,4 +1,4 @@
-package com.mrwhoknows.findmynoti.data.model
+package com.mrwhoknows.findmynoti.server.model
 
 import com.mrwhoknows.findmynoti.NotificationEntity
 import kotlinx.serialization.SerialName

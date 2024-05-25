@@ -1,7 +1,7 @@
 package com.mrwhoknows.findmynoti.ui.noti
 
-import com.mrwhoknows.findmynoti.data.model.NotificationDTO
 import com.mrwhoknows.findmynoti.server.HostDevice
+import com.mrwhoknows.findmynoti.server.model.NotificationDTO
 import io.github.aakira.napier.Napier
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body

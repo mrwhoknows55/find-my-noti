@@ -2,8 +2,8 @@ package com.mrwhoknows.findmynoti.server
 
 import com.mrwhoknows.findmynoti.NotificationEntity
 import com.mrwhoknows.findmynoti.data.db.SQLiteNotificationsRepository
-import com.mrwhoknows.findmynoti.data.model.NotificationDTO
-import com.mrwhoknows.findmynoti.data.model.toDTO
+import com.mrwhoknows.findmynoti.server.model.NotificationDTO
+import com.mrwhoknows.findmynoti.server.model.toDTO
 import com.mrwhoknows.findmynoti.util.Platform
 import io.github.aakira.napier.Napier
 import io.ktor.http.HttpStatusCode

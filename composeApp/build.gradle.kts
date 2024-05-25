@@ -58,6 +58,7 @@ kotlin {
             // logger
             implementation(libs.napier)
 
+            implementation(libs.kotlinx.datetime)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
