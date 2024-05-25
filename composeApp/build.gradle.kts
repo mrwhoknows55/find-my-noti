@@ -47,6 +47,7 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.datetime)
 
             // ktor server dependencies
             implementation(libs.ktor.server.netty.jvm)
@@ -58,7 +59,11 @@ kotlin {
             // logger
             implementation(libs.napier)
 
-            implementation(libs.kotlinx.datetime)
+            // navigation
+            implementation(libs.voyager.navigator)
+            implementation(libs.voyager.screenmodel)
+            implementation(libs.voyager.transitions)
+            implementation(libs.voyager.koin)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

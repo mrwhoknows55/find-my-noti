@@ -18,7 +18,7 @@ class SQLiteNotificationsRepository(driverFactory: DriverFactory) : Notification
         limit: Long,
         offset: Long,
     ): List<NotificationEntity> = withContext(IO){
-        database.notificationEntityQueries.selectAllByOffsetAndLimit(offset, limit).executeAsList()
+        database.notificationEntityQueries.selectAllByOffsetAndLimit(limit, offset).executeAsList()
     }
 
     override suspend fun insertNotification(entity: NotificationEntity) = withContext(IO) {

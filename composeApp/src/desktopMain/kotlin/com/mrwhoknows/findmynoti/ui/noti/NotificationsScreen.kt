@@ -16,9 +16,6 @@ import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -34,11 +31,9 @@ fun NotificationsScreen(notificationViewModel: NotificationViewModel) {
     Column(
         Modifier.fillMaxSize().background(colorScheme.surface)
     ) {
-        var searchText by remember { mutableStateOf("") }
         SearchBar(
-            Modifier.padding(16.dp).fillMaxWidth().background(colorScheme.background), searchText
+            Modifier.padding(16.dp).fillMaxWidth().background(colorScheme.background)
         ) {
-            searchText = it
             notificationViewModel.search(it)
         }
         Box {

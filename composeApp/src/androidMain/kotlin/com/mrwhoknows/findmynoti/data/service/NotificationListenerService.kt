@@ -42,7 +42,7 @@ class NotificationListenerService : NotificationListenerService() {
         Log.d(TAG, "onNotificationPosted: $title -> $content -> sbn: $sbn")
         Log.i(TAG, "onNotificationPosted: extras: $extras")
         val timestamp = sbn.postTime
-        val image = extras.getString(Notification.EXTRA_PICTURE).orEmpty()
+        val image = extras.getString(Notification.EXTRA_PICTURE, "").orEmpty()
 
         val appName: String = with(applicationContext.packageManager) {
             return@with kotlin.runCatching {
