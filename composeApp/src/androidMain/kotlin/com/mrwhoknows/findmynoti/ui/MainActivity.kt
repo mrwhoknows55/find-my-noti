@@ -27,6 +27,76 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             Navigator(NotificationListScreen())
+            /*
+                        AppTheme {
+                Surface(modifier = Modifier.fillMaxSize()) {
+                    val viewModel: HandshakeViewModel by viewModels()
+                    val context = LocalContext.current
+                    val scanQrCodeLauncher =
+                        rememberLauncherForActivityResult(ScanQRCode()) { result ->
+                            Napier.i("scanQrCodeLauncher: $result")
+                            when (result) {
+                                is QRResult.QRSuccess -> {
+                                    if (result.content is QRContent.Url) {
+                                        val desktopAddress = result.content.rawValue.orEmpty()
+                                        Napier.i("desktopAddress: $desktopAddress}")
+                                        viewModel.connectWithDesktop(
+                                            desktopAddress,
+                                            server.serverIpAddress
+                                        )
+                                    } else {
+                                        context.showShortToast("invalid qr code")
+                                    }
+                                }
+                                is QRResult.QRError -> {
+                                    context.showShortToast("error: ${result.exception}")
+                                }
+
+                                QRResult.QRMissingPermission -> {
+                                    context.showShortToast("camera permissions required to scan QR code")
+                                }
+
+                                QRResult.QRUserCanceled -> {
+                                    // no-op
+                                }
+                            }
+                        }
+                    var serverStarted by remember { mutableStateOf(false) }
+                    val text by remember(serverStarted) {
+                        mutableStateOf(
+                            if (serverStarted) "Stop Server" else "Start Server"
+                        )
+                    }
+                    Column(
+                        Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Button(
+                            onClick = {
+                                serverStarted = !serverStarted
+                                if (serverStarted) {
+                                    server.startServer()
+                                } else {
+                                    server.stopServer()
+                                }
+                            },
+                        ) {
+                            Text(text)
+                        }
+
+                        if (serverStarted) {
+                            Button({
+                                scanQrCodeLauncher.launch(null)
+                            }) {
+                                Text("Connect to desktop")
+                            }
+                        }
+                    }
+                }
+            }
+            return@setContent
+             */
         }
     }
 

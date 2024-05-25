@@ -1,9 +1,7 @@
 package com.mrwhoknows.findmynoti.server
 
-import com.mrwhoknows.findmynoti.NotificationEntity
-import com.mrwhoknows.findmynoti.data.db.SQLiteNotificationsRepository
-import com.mrwhoknows.findmynoti.server.model.NotificationDTO
-import com.mrwhoknows.findmynoti.server.model.toDTO
+import com.mrwhoknows.findmynoti.data.repo.NotificationsRepository
+import com.mrwhoknows.findmynoti.ui.model.Notification
 import com.mrwhoknows.findmynoti.util.Platform
 import io.github.aakira.napier.Napier
 import io.ktor.http.HttpStatusCode
@@ -17,8 +15,7 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 
 fun Application.notificationRoutes(
-    repository: SQLiteNotificationsRepository,
-    platform: Platform
+    repository: NotificationsRepository, platform: Platform
 ) {
     install(ContentNegotiation) {
         json()
@@ -27,15 +24,14 @@ fun Application.notificationRoutes(
     routing {
         get("/ping") {
             call.respond(
-                message = platform.deviceName,
-                status = HttpStatusCode.OK
+                message = platform.deviceName, status = HttpStatusCode.OK
             )
         }
 
         // TODO add pagination
         get("/notifications") {
-            val notifications: List<NotificationDTO> = runCatching {
-                repository.getNotificationByOffsetAndLimit(limit = 0, offset = 50).map(NotificationEntity::toDTO)
+            val notifications: List<Notification> = runCatching {
+                repository.getNotificationByOffsetAndLimit(limit = 50, offset = 0)
             }.getOrElse {
                 Napier.i("/notifications: $it")
                 emptyList()
@@ -50,8 +46,8 @@ fun Application.notificationRoutes(
 
         get("/search/{keyword}") {
             val keyword = call.parameters["keyword"].orEmpty()
-            val notifications: List<NotificationDTO> = runCatching {
-                repository.searchNotifications(keyword).map(NotificationEntity::toDTO)
+            val notifications: List<Notification> = runCatching {
+                repository.searchNotifications(keyword)
             }.getOrElse {
                 Napier.i("/notifications: $it")
                 emptyList()
@@ -65,4 +61,3 @@ fun Application.notificationRoutes(
         }
     }
 }
-

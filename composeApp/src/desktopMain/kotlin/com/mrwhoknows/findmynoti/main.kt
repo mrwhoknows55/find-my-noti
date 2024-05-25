@@ -13,9 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import com.mrwhoknows.findmynoti.data.repo.NotificationsRepositoryImpl
 import com.mrwhoknows.findmynoti.server.HandshakeService
+import com.mrwhoknows.findmynoti.ui.NotificationListScreenModel
 import com.mrwhoknows.findmynoti.ui.handshake.QRCodeConnectionScreen
-import com.mrwhoknows.findmynoti.ui.noti.NotificationViewModel
 import com.mrwhoknows.findmynoti.ui.noti.NotificationsScreen
 import com.mrwhoknows.findmynoti.ui.theme.AppTheme
 import com.mrwhoknows.findmynoti.util.isDebug
@@ -60,9 +61,10 @@ fun main() = application {
                         QRCodeConnectionScreen(handshakeServiceState)
                     } else {
                         handshakeService.stopServer()
-                        val notificationViewModel =
-                            NotificationViewModel(handshakeServiceState.hostDevice)
-                        NotificationsScreen(notificationViewModel)
+                        val notificationListScreenModel = NotificationListScreenModel(
+                            NotificationsRepositoryImpl(handshakeServiceState.hostDevice)
+                        )
+                        NotificationsScreen(notificationListScreenModel)
                     }
                 }
             }

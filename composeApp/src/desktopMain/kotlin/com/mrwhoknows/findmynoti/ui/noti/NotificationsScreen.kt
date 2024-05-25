@@ -19,14 +19,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.mrwhoknows.findmynoti.server.model.NotificationDTO
+import com.mrwhoknows.findmynoti.ui.NotificationListScreenModel
 import com.mrwhoknows.findmynoti.ui.component.NotificationList
 import com.mrwhoknows.findmynoti.ui.component.SearchBar
-import com.mrwhoknows.findmynoti.ui.model.toNotification
 import io.github.aakira.napier.Napier
 
 @Composable
-fun NotificationsScreen(notificationViewModel: NotificationViewModel) {
+fun NotificationsScreen(notificationViewModel: NotificationListScreenModel) {
     val notifications by notificationViewModel.notifications.collectAsState()
     Column(
         Modifier.fillMaxSize().background(colorScheme.surface)
@@ -40,7 +39,7 @@ fun NotificationsScreen(notificationViewModel: NotificationViewModel) {
             val scrollState = rememberLazyListState()
             NotificationList(
                 scrollState = scrollState,
-                notifications = notifications.map(NotificationDTO::toNotification)
+                notifications = notifications
             ) {
                 Napier.i { "onItemClick: $it" }
             }

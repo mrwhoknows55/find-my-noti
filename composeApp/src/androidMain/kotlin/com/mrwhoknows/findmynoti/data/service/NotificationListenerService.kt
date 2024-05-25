@@ -5,7 +5,7 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
 import com.mrwhoknows.findmynoti.NotificationEntity
-import com.mrwhoknows.findmynoti.data.db.SQLiteNotificationsRepository
+import com.mrwhoknows.findmynoti.data.repo.NotificationsRepository
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +17,7 @@ private const val TAG = "NotificationListenerSer"
 
 class NotificationListenerService : NotificationListenerService() {
 
-    private val notificationsRepository: SQLiteNotificationsRepository by inject()
+    private val notificationsRepository: NotificationsRepository by inject()
 
     private fun insertNotification(notificationEntity: NotificationEntity) {
         CoroutineScope(Dispatchers.IO).launch {

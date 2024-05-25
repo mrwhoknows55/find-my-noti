@@ -1,6 +1,6 @@
 package com.mrwhoknows.findmynoti.server
 
-import com.mrwhoknows.findmynoti.data.db.SQLiteNotificationsRepository
+import com.mrwhoknows.findmynoti.data.repo.NotificationsRepository
 import com.mrwhoknows.findmynoti.util.Platform
 import com.mrwhoknows.findmynoti.util.currentPrivateIPAddress
 import com.mrwhoknows.findmynoti.util.getUnusedRandomPortNumber
@@ -12,7 +12,7 @@ import io.ktor.server.netty.Netty
 import io.ktor.server.netty.NettyApplicationEngine
 
 class NotificationServer(
-    private val repository: SQLiteNotificationsRepository,
+    private val repository: NotificationsRepository,
     private val platform: Platform
 ) {
 
