@@ -5,6 +5,7 @@ import com.mrwhoknows.findmynoti.data.repo.NotificationsRepository
 import com.mrwhoknows.findmynoti.data.repo.NotificationsRepositoryImpl
 import com.mrwhoknows.findmynoti.server.NotificationServer
 import com.mrwhoknows.findmynoti.ui.NotificationListScreenModel
+import com.mrwhoknows.findmynoti.ui.SettingsScreenModel
 import com.mrwhoknows.findmynoti.util.getPlatform
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
@@ -18,4 +19,8 @@ val appModule = module {
 
 val notificationListModule = module {
     factory { NotificationListScreenModel(get()) }
+}
+
+val settingsModule = module {
+    factory { SettingsScreenModel(get()) }
 }

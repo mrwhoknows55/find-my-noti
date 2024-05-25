@@ -6,6 +6,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import com.mrwhoknows.findmynoti.di.appModule
 import com.mrwhoknows.findmynoti.di.notificationListModule
+import com.mrwhoknows.findmynoti.di.settingsModule
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import org.koin.android.ext.koin.androidContext
@@ -20,7 +21,7 @@ class MainApplication : Application() {
         startKoin {
             androidContext(this@MainApplication)
             androidLogger()
-            modules(appModule, notificationListModule)
+            modules(appModule, notificationListModule, settingsModule)
         }
         if (isDebugBuild()) {
             Napier.base(DebugAntilog())

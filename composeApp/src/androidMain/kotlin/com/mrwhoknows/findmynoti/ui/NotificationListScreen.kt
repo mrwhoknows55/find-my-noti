@@ -22,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.koinScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.mrwhoknows.findmynoti.ui.component.NotificationList
 import com.mrwhoknows.findmynoti.ui.component.SearchBar
 import com.mrwhoknows.findmynoti.ui.theme.AppTheme
@@ -31,6 +33,7 @@ class NotificationListScreen : Screen {
 
     @Composable
     override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
         AppTheme {
             val screenModel = koinScreenModel<NotificationListScreenModel>()
 
@@ -56,6 +59,7 @@ class NotificationListScreen : Screen {
                     )
                     IconButton({
                         // TODO
+                        navigator.push(SettingsScreen())
                     }) {
                         Icon(
                             imageVector = Icons.Filled.Settings,

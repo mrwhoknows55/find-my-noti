@@ -46,7 +46,8 @@ class NotificationListScreenModel(
         fetchJob?.cancel()
         searchJob?.cancel()
         fetchJob = screenModelScope.launch(Dispatchers.IO) {
-            val notifications = repository.getAllNotifications()
+            // FIXME: pagination
+            val notifications = repository.getNotificationByOffsetAndLimit(limit = 50, 0)
             _notifications.update {
                 notifications
             }
