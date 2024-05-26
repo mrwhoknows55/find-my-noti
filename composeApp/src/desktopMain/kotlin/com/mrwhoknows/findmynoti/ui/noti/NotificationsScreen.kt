@@ -14,11 +14,10 @@ import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import app.cash.paging.compose.collectAsLazyPagingItems
 import com.mrwhoknows.findmynoti.ui.NotificationListScreenModel
 import com.mrwhoknows.findmynoti.ui.component.NotificationList
 import com.mrwhoknows.findmynoti.ui.component.SearchBar
@@ -26,7 +25,7 @@ import io.github.aakira.napier.Napier
 
 @Composable
 fun NotificationsScreen(notificationViewModel: NotificationListScreenModel) {
-    val notifications by notificationViewModel.notifications.collectAsState()
+    val notifications = notificationViewModel.notifications.collectAsLazyPagingItems()
     Column(
         Modifier.fillMaxSize().background(colorScheme.surface)
     ) {

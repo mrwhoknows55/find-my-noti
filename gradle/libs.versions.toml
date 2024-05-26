@@ -15,12 +15,14 @@ compose-plugin = "1.6.10"
 junit = "4.13.2"
 koin = "3.5.6"
 kotlin = "2.0.0"
+kotlinxCoroutines = "1.8.1"
 kotlinxDatetime = "0.6.0"
 kotlinxSerializationJson = "1.6.3"
 ktorVersion = "2.3.11"
-materialkolor = "1.4.4"
+materialkolor = "1.5.1"
 multiplatformSettings = "1.1.1"
 napier = "2.7.1"
+paging = "3.3.0-alpha02-0.5.1"
 qrose = "1.0.0"
 quickieUnbundled = "1.10.0"
 sqlDelightVersion = "2.0.2"
@@ -32,6 +34,9 @@ koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinxCoroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -53,6 +58,8 @@ ktor-server-netty-jvm = { module = "io.ktor:ktor-server-netty-jvm", version.ref 
 materialkolor = { module = "com.materialkolor:material-kolor", version.ref = "materialkolor" }
 multiplatform-settings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettings" }
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
+paging-common = { module = "app.cash.paging:paging-common", version.ref = "paging" }
+paging-compose-common = { module = "app.cash.paging:paging-compose-common", version.ref = "paging" }
 qrose = { module = "io.github.alexzhirkevich:qrose", version.ref = "qrose" }
 quickie-unbundled = { module = "io.github.g00fy2.quickie:quickie-unbundled", version.ref = "quickieUnbundled" }
 sqldelight-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelightVersion" }

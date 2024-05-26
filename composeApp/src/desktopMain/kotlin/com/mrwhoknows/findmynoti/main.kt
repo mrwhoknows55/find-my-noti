@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -13,7 +14,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import com.mrwhoknows.findmynoti.data.repo.NotificationsRepositoryImpl
+import cafe.adriel.voyager.core.model.rememberScreenModel
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.Navigator
+import com.mrwhoknows.findmynoti.data.repo.NotificationDataSourceImpl
+import com.mrwhoknows.findmynoti.data.repo.NotificationRepository
 import com.mrwhoknows.findmynoti.server.HandshakeService
 import com.mrwhoknows.findmynoti.ui.NotificationListScreenModel
 import com.mrwhoknows.findmynoti.ui.handshake.QRCodeConnectionScreen
@@ -34,7 +39,13 @@ fun main() = application {
         alwaysOnTop = true,
     ) {
         window.minimumSize = Dimension(800, 600)
+        Navigator(MainScreen())
+    }
+}
 
+class MainScreen : Screen {
+    @Composable
+    override fun Content() {
         val handshakeService = HandshakeService()
         LaunchedEffect(Unit) {
             handshakeService.startServer()
@@ -46,7 +57,6 @@ fun main() = application {
                 color = colorScheme.surface,
             ) {
                 AnimatedContent(handshakeServiceState) { handshakeServiceState ->
-
                     if (handshakeServiceState.error.isNotBlank()) {
                         Box(contentAlignment = Alignment.Center) {
                             Text(
@@ -61,9 +71,13 @@ fun main() = application {
                         QRCodeConnectionScreen(handshakeServiceState)
                     } else {
                         handshakeService.stopServer()
-                        val notificationListScreenModel = NotificationListScreenModel(
-                            NotificationsRepositoryImpl(handshakeServiceState.hostDevice)
-                        )
+                        val notificationListScreenModel = rememberScreenModel {
+                            NotificationListScreenModel(
+                                NotificationRepository(
+                                    NotificationDataSourceImpl(handshakeServiceState.hostDevice)
+                                )
+                            )
+                        }
                         NotificationsScreen(notificationListScreenModel)
                     }
                 }

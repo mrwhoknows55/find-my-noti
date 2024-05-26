@@ -23,10 +23,10 @@ INSERT OR REPLACE INTO NotificationEntity(id, title, content, packageName, appNa
 VALUES (?, ?, ?, ?,?, ?, ?);
 
 selectById:
-SELECT * FROM NotificationEntity WHERE id = ? ORDER BY timestamp DESC ;
+SELECT * FROM NotificationEntity WHERE id = ? ORDER BY timestamp DESC LIMIT ? OFFSET ?;
 
 selectByPackageName:
-SELECT * FROM NotificationEntity WHERE packageName = ? ORDER BY timestamp DESC ;
+SELECT * FROM NotificationEntity WHERE packageName = ? ORDER BY timestamp DESC LIMIT ? OFFSET ?;
 
 searchByTitleOrContent:
 SELECT * FROM NotificationEntity WHERE LOWER(title) LIKE LOWER(?) OR LOWER(content) LIKE LOWER(?) ORDER BY timestamp DESC LIMIT 10;

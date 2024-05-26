@@ -1,4 +1,4 @@
-package com.mrwhoknows.findmynoti.ui
+package com.mrwhoknows.findmynoti
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.core.app.NotificationManagerCompat
 import cafe.adriel.voyager.navigator.Navigator
+import com.mrwhoknows.findmynoti.ui.NotificationListScreen
 
 class MainActivity : ComponentActivity() {
 

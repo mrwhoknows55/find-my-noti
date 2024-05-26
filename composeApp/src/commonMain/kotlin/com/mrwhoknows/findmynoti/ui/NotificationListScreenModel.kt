@@ -1,65 +1,38 @@
 package com.mrwhoknows.findmynoti.ui
 
 import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
-import com.mrwhoknows.findmynoti.data.repo.NotificationsRepository
-import com.mrwhoknows.findmynoti.ui.model.Notification
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.mrwhoknows.findmynoti.data.repo.NotificationRepository
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 @OptIn(FlowPreview::class)
 class NotificationListScreenModel(
-    private val repository: NotificationsRepository
+    private val repository: NotificationRepository
 ) : ScreenModel {
-    private val _searchKeyword = MutableStateFlow("")
-    private val _notifications = MutableStateFlow(listOf<Notification>())
-    val notifications = _notifications.asStateFlow()
+    private val searchKeyword = MutableStateFlow("")
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val notifications = searchKeyword.debounce(300).flatMapLatest { keyword ->
+        if (keyword.isBlank()) {
+            repository.getNotifications(limit = 20).flow
+        } else {
+            repository.searchNotifications(keyword = keyword, limit = 20).flow
+        }
+    }
 
     fun search(keyword: String) {
-        _searchKeyword.update { keyword }
+        searchKeyword.update { keyword }
     }
 
-    private var searchJob: Job? = null
-    private fun searchNotifications(keyword: String) {
-        if (keyword.isBlank()) {
-            getNotifications()
-            return
-        }
-        searchJob?.cancel()
-        fetchJob?.cancel()
-        searchJob = CoroutineScope(Dispatchers.IO).launch {
-            val result = repository.searchNotifications(keyword)
-            _notifications.update { result }
-        }
-    }
-
-    private var fetchJob: Job? = null
     private fun getNotifications() {
-        fetchJob?.cancel()
-        searchJob?.cancel()
-        fetchJob = screenModelScope.launch(Dispatchers.IO) {
-            // FIXME: pagination
-            val notifications = repository.getNotificationByOffsetAndLimit(limit = 50, 0)
-            _notifications.update {
-                notifications
-            }
-        }
+        searchKeyword.update { "" }
     }
 
     init {
         getNotifications()
-        screenModelScope.launch(Dispatchers.IO) {
-            _searchKeyword.debounce(200).collectLatest {
-                searchNotifications(it)
-            }
-        }
     }
 }

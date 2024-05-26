@@ -9,13 +9,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 /**
- * Implementation of [NotificationsRepository] which talks to local Notifications sqlite DB using [DriverFactory]
+ * Implementation of [NotificationDataSource] which talks to local Notifications sqlite DB using [DriverFactory]
  *
  * Consumed from Android App
  */
-actual class NotificationsRepositoryImpl(
+actual class NotificationDataSourceImpl(
     driverFactory: DriverFactory
-) : NotificationsRepository {
+) : NotificationDataSource {
     private val database by lazy {
         createDatabase(driverFactory = driverFactory)
     }
@@ -26,11 +26,12 @@ actual class NotificationsRepositoryImpl(
     }
 
     override suspend fun getNotificationByOffsetAndLimit(
-        limit: Long,
-        offset: Long,
+        limit: Int,
+        offset: Int,
     ): List<Notification> = withContext(Dispatchers.IO) {
-        database.notificationEntityQueries.selectAllByOffsetAndLimit(limit, offset).executeAsList()
-            .map(NotificationEntity::toNotification)
+        database.notificationEntityQueries.selectAllByOffsetAndLimit(
+            limit.toLong(), offset.toLong()
+        ).executeAsList().map(NotificationEntity::toNotification)
     }
 
     override suspend fun insertNotification(entity: NotificationEntity) =
@@ -42,17 +43,28 @@ actual class NotificationsRepositoryImpl(
             }
         }
 
-    override suspend fun getNotificationByPackageName(packageName: String): List<Notification> =
-        withContext(Dispatchers.IO) {
-            database.notificationEntityQueries.selectByPackageName(packageName).executeAsList()
-                .map(NotificationEntity::toNotification)
-        }
+    override suspend fun getNotificationByPackageName(
+        packageName: String,
+        limit: Int,
+        offset: Int,
+    ): List<Notification> = withContext(Dispatchers.IO) {
+        database.notificationEntityQueries.selectByPackageName(
+            packageName,
+            limit.toLong(),
+            offset.toLong()
+        )
+            .executeAsList()
+            .map(NotificationEntity::toNotification)
+    }
 
-    override suspend fun searchNotifications(keyword: String): List<Notification> =
-        withContext(Dispatchers.IO) {
-            val query = "%$keyword%"
-            database.notificationEntityQueries.searchByTitleOrContent(query, query).executeAsList()
-                .map(NotificationEntity::toNotification)
-        }
+    override suspend fun searchNotifications(
+        keyword: String,
+        limit: Int,
+        offset: Int,
+    ): List<Notification> = withContext(Dispatchers.IO) {
+        val query = "%$keyword%"
+        database.notificationEntityQueries.searchByTitleOrContent(query, query).executeAsList()
+            .map(NotificationEntity::toNotification)
+    }
 
 }

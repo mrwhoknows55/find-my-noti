@@ -15,11 +15,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import app.cash.paging.compose.collectAsLazyPagingItems
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -37,7 +36,7 @@ class NotificationListScreen : Screen {
         AppTheme {
             val screenModel = koinScreenModel<NotificationListScreenModel>()
 
-            val notifications by screenModel.notifications.collectAsState()
+            val notifications = screenModel.notifications.collectAsLazyPagingItems()
             Column(
                 Modifier
                     .statusBarsPadding()

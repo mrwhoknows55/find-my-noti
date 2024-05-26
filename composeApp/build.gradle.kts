@@ -30,6 +30,8 @@ kotlin {
 
             implementation(libs.quickie.unbundled)
             implementation(libs.ktor.client.okhttp)
+
+            implementation(libs.kotlinx.coroutines.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -47,6 +49,7 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.datetime)
 
             // ktor server dependencies
@@ -64,6 +67,10 @@ kotlin {
             implementation(libs.voyager.screenmodel)
             implementation(libs.voyager.transitions)
             implementation(libs.voyager.koin)
+
+            // paging
+            implementation(libs.paging.common)
+            implementation(libs.paging.compose.common)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -72,6 +79,8 @@ kotlin {
 
             // qr code generation
             implementation(libs.qrose)
+
+            implementation(libs.kotlinx.coroutines.swing)
         }
     }
 }
