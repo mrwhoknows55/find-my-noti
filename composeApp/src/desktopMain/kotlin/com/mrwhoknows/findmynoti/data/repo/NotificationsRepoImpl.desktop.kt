@@ -1,7 +1,7 @@
 package com.mrwhoknows.findmynoti.data.repo
 
 import com.mrwhoknows.findmynoti.NotificationEntity
-import com.mrwhoknows.findmynoti.server.HostDevice
+import com.mrwhoknows.findmynoti.server.model.HostDevice
 import com.mrwhoknows.findmynoti.ui.model.Notification
 import com.mrwhoknows.findmynoti.util.Constants.Limit
 import com.mrwhoknows.findmynoti.util.Constants.Offset

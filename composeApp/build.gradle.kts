@@ -53,7 +53,7 @@ kotlin {
             implementation(libs.kotlinx.datetime)
 
             // ktor server dependencies
-            implementation(libs.ktor.server.netty.jvm)
+            implementation(libs.ktor.server.cio)
             implementation(libs.ktor.server.content.negotiation)
 
             // kv-store
@@ -102,12 +102,26 @@ android {
     }
     packaging {
         resources {
-            excludes += "/META-INF/*"
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
     buildTypes {
-        getByName("release") {
+        getByName("debug") {
+            isDebuggable = true
             isMinifyEnabled = false
+            isShrinkResources = false
+        }
+        getByName("release") {
+            isDebuggable = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+
+            // TODO replace with file from env
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -126,9 +140,17 @@ compose.desktop {
         nativeDistributions {
             jvmArgs("-Dapple.awt.application.appearance=system")
 
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.mrwhoknows.findmynoti"
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
+            packageName = "FindMyNotification"
             packageVersion = "1.0.0"
+
+            buildTypes.release {
+                proguard {
+                    configurationFiles.from("proguard-rules.pro")
+                    obfuscate.set(false)
+                    optimize.set(false)
+                }
+            }
         }
     }
 }

@@ -7,16 +7,15 @@ import com.mrwhoknows.findmynoti.util.getUnusedRandomPortNumber
 import io.github.aakira.napier.Napier
 import io.ktor.http.URLBuilder
 import io.ktor.http.URLProtocol
+import io.ktor.server.cio.CIO
+import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.engine.embeddedServer
-import io.ktor.server.netty.Netty
-import io.ktor.server.netty.NettyApplicationEngine
 
 class NotificationServer(
-    private val repository: NotificationDataSource,
-    private val platform: Platform
+    private val repository: NotificationDataSource, private val platform: Platform
 ) {
 
-    private lateinit var server: NettyApplicationEngine
+    private lateinit var server: ApplicationEngine
     private val portNumber by lazy {
         getUnusedRandomPortNumber()
     }
@@ -34,12 +33,11 @@ class NotificationServer(
     fun startServer() {
 
         runCatching {
-            server =
-                embeddedServer(
-                    Netty,
-                    port = portNumber,
-                    module = { notificationRoutes(repository, platform = platform) })
-            Napier.i("startServer: ${server.application}")
+            server = embeddedServer(
+                CIO,
+                port = portNumber,
+                module = { notificationRoutes(repository, platform = platform) },
+            )
             server.start()
         }.onFailure {
             // TODO handle binder failure error

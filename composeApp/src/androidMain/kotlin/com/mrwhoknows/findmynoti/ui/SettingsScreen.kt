@@ -9,6 +9,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -84,11 +85,15 @@ class SettingsScreen : Screen {
                         Text(text)
                     }
 
+                    val deviceName by screenModel.connectedDeviceName.collectAsState()
                     if (serverStarted) {
-                        Button({
-                            scanQrCodeLauncher.launch(null)
-                        }) {
-                            Text("Connect to desktop")
+                        Button(
+                            enabled = deviceName.isEmpty(),
+                            onClick = {
+                                scanQrCodeLauncher.launch(null)
+                            }
+                        ) {
+                            Text(deviceName.ifBlank { "Connect to desktop" })
                         }
                     }
                 }

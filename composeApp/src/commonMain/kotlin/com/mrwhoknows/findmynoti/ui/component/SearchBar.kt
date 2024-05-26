@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier,
+    hint: String = "Search notification by title or content",
     onTextChange: (String) -> Unit
 ) {
     var searchText by remember { mutableStateOf("") }
@@ -28,12 +29,12 @@ fun SearchBar(
             onTextChange(it)
         },
         label = {
-            Text("Search", color = MaterialTheme.colorScheme.onSurface)
+            Text(hint, color = MaterialTheme.colorScheme.onSurface)
         },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = "Search",
+                contentDescription = hint,
                 tint = MaterialTheme.colorScheme.onSurface,
             )
         }

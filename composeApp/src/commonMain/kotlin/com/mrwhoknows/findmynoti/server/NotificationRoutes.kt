@@ -30,7 +30,6 @@ fun Application.notificationRoutes(
             )
         }
 
-        // TODO add pagination
         get("/notifications") {
             val (offset, limit) = call.getOffsetAndLimit()
             val notifications: List<Notification> = runCatching {
@@ -66,6 +65,10 @@ fun Application.notificationRoutes(
     }
 }
 
+/**
+ * Parses offset and limit from [ApplicationCall] query parameters
+ * And returns [Pair] first = offset: Int & second = limit: Int
+ */
 private fun ApplicationCall.getOffsetAndLimit(): Pair<Int, Int> {
     // TODO send error to client if params are not correct
     val offset = request.queryParameters[Constants.Offset.name].orEmpty().toIntOrNull() ?: 0

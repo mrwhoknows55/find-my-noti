@@ -24,6 +24,7 @@ import com.mrwhoknows.findmynoti.ui.NotificationListScreenModel
 import com.mrwhoknows.findmynoti.ui.handshake.QRCodeConnectionScreen
 import com.mrwhoknows.findmynoti.ui.noti.NotificationsScreen
 import com.mrwhoknows.findmynoti.ui.theme.AppTheme
+import com.mrwhoknows.findmynoti.util.getPlatform
 import com.mrwhoknows.findmynoti.util.isDebug
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
@@ -46,7 +47,7 @@ fun main() = application {
 class MainScreen : Screen {
     @Composable
     override fun Content() {
-        val handshakeService = HandshakeService()
+        val handshakeService = HandshakeService(getPlatform())
         LaunchedEffect(Unit) {
             handshakeService.startServer()
         }
