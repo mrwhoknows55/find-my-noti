@@ -150,7 +150,7 @@ compose.desktop {
                 "java.sql",
                 "jdk.unsupported",
             )
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
+            targetFormats(TargetFormat.Deb, TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Exe)
             packageName = "FindMyNotification"
             packageVersion = "1.0.0"
 
