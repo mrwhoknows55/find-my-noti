@@ -76,6 +76,8 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.sqldelight.jvm.driver)
+            runtimeOnly(libs.ui.util.desktop)
+            implementation(libs.kotlinx.serialization.json)
 
             // qr code generation
             implementation(libs.qrose)
@@ -103,6 +105,7 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            resources.excludes += "DebugProbesKt.bin"
         }
     }
     buildTypes {
@@ -117,7 +120,7 @@ android {
             isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "compose-android.pro",
             )
 
             // TODO replace with file from env
@@ -140,15 +143,22 @@ compose.desktop {
         nativeDistributions {
             jvmArgs("-Dapple.awt.application.appearance=system")
 
+            modules(
+                "java.instrument",
+                "java.management",
+                "java.prefs",
+                "java.sql",
+                "jdk.unsupported",
+            )
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
             packageName = "FindMyNotification"
             packageVersion = "1.0.0"
 
             buildTypes.release {
                 proguard {
-                    configurationFiles.from("proguard-rules.pro")
+                    configurationFiles.from("compose-desktop.pro")
                     obfuscate.set(false)
-                    optimize.set(false)
+                    optimize.set(true)
                 }
             }
         }

@@ -1,3 +1,5 @@
+-printmapping build/compose-android-release-mapping.txt
+
 -keepclasseswithmembers class **.*$Companion {
     kotlinx.serialization.KSerializer serializer(...);
 }

@@ -15,7 +15,7 @@ koin = "3.5.6"
 kotlin = "2.0.0"
 kotlinxCoroutines = "1.8.1"
 kotlinxDatetime = "0.6.0"
-kotlinxSerializationJson = "1.6.3"
+kotlinxSerializationJson = "1.7.0-RC"
 ktorVersion = "2.3.11"
 materialkolor = "1.5.1"
 multiplatformSettings = "1.1.1"
@@ -47,10 +47,12 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = 
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktorVersion" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorVersion" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktorVersion" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktorVersion" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorVersion" }
 ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktorVersion" }
 ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktorVersion" }
+ktor-server-content-compression = { module = "io.ktor:ktor-server-compression", version.ref = "ktorVersion" }
 materialkolor = { module = "com.materialkolor:material-kolor", version.ref = "materialkolor" }
 multiplatform-settings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettings" }
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
@@ -60,6 +62,7 @@ qrose = { module = "io.github.alexzhirkevich:qrose", version.ref = "qrose" }
 quickie-unbundled = { module = "io.github.g00fy2.quickie:quickie-unbundled", version.ref = "quickieUnbundled" }
 sqldelight-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelightVersion" }
 sqldelight-jvm-driver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqlDelightVersion" }
+ui-util-desktop = { module = "androidx.compose.ui:ui-util-desktop", version.ref = "compose" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 voyager-screenmodel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
 voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyager" }

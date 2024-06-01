@@ -13,6 +13,9 @@ import io.ktor.client.request.get
 import io.ktor.http.URLBuilder
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CancellationException
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.json.Json
 
 /**
  * Implementation of [NotificationDataSource] which talks to ktor server hosted on Android app [com.mrwhoknows.findmynoti.server.NotificationServer]
@@ -24,10 +27,17 @@ actual class NotificationDataSourceImpl(
 ) : NotificationDataSource {
     private val host = hostDevice.hostUrl
 
+    private val json by lazy {
+        Json {
+            isLenient = true
+            ignoreUnknownKeys = true
+        }
+    }
+
     private val ktorClient by lazy {
         HttpClient {
             install(ContentNegotiation) {
-                json()
+                json(json)
             }
         }
     }
@@ -87,4 +97,14 @@ actual class NotificationDataSourceImpl(
     ): List<Notification> {
         TODO("Not yet implemented")
     }
+
+
+    // some weird bug with ktor kotlinx-serialization with proguard for now doing this fixes it
+    // https://youtrack.jetbrains.com/issue/KTOR-5898
+    init {
+        val notificationListSerializer: KSerializer<List<Notification>> =
+            ListSerializer(Notification.serializer())
+        Napier.i { "notificationListSerializer: $notificationListSerializer" }
+    }
+
 }
